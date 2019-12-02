@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController(value = "/api/v1.0/factorial")
 class FactorialController(
-        @Autowired val factorialService: FactorialService
+    @Autowired val factorialService: FactorialService
 ) {
 
     @GetMapping("/{number}")
@@ -18,5 +18,4 @@ class FactorialController(
         ResponseEntity
                 .ok()
                 .body(factorialService.calculateFactorialNumberOf(number))
-
 }

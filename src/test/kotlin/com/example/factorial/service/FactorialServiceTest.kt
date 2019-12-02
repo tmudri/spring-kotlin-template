@@ -1,10 +1,10 @@
 package com.example.factorial.service
 
 import com.example.factorial.domain.Factorial
+import java.lang.IllegalArgumentException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.lang.IllegalArgumentException
 
 internal class FactorialServiceTest {
 
@@ -35,6 +35,5 @@ internal class FactorialServiceTest {
         assertThrows<IllegalArgumentException>("Unsupported value: -2. Cannot calculate factorial value for negative numbers or zero.") {
             factorialService.calculateFactorialNumberOf(-2)
         }
-
     }
 }
