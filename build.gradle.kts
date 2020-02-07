@@ -50,10 +50,17 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+        exclude(group = "junit", module = "junit")
     }
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.1.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
+    testImplementation("org.junit.platform:junit-platform-runner:1.5.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.5.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+
+    implementation("io.cucumber:cucumber-spring:5.1.0")
+    implementation("io.cucumber:cucumber-jvm:5.1.0")
+    implementation("io.cucumber:cucumber-java8:5.1.0")
+    implementation("io.cucumber:cucumber-junit:5.1.0")
 }
 
 tasks.withType<Test> {

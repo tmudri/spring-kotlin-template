@@ -1,11 +1,10 @@
 package com.example.factorial.service
 
 import com.example.factorial.domain.Factorial
-import java.lang.IllegalArgumentException
 import java.util.stream.IntStream
 import org.springframework.stereotype.Service
 
-val UNSUPPORTED_FACTORIAL_VALUE = "Unsupported value: %d. Cannot calculate factorial value for negative numbers or zero."
+const val UNSUPPORTED_FACTORIAL_VALUE = "Unsupported value: %d. Cannot calculate factorial value for negative numbers or zero."
 
 @Service
 class FactorialService {
