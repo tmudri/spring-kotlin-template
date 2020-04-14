@@ -15,10 +15,13 @@ const val CORRELATION_ID = "X-Correlation-ID"
 class CorrelationIdFilter : Filter {
 
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
-        val cid = getCorrelationId(request as HttpServletRequest?)
+        checkNotNull(request) { "Servlet request cannot be null" }
+        checkNotNull(response) { "Servlet response cannot be null" }
+
+        val cid = getCorrelationId(request as HttpServletRequest)
 
         val httpRequest = addCorrelationIdToRequestHeader(request, cid)
-        val httpResponse = addCorrelationIdToResponseHeader(response as HttpServletResponse?, cid)
+        val httpResponse = addCorrelationIdToResponseHeader(response as HttpServletResponse, cid)
 
         chain?.doFilter(httpRequest, httpResponse)
     }
