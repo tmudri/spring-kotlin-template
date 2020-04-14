@@ -1,6 +1,6 @@
 Feature: Ensure that every http request and response have correlation ID in headers for tracing purposes.
 
-  Scenario: Create correlation ID if it doesn't exist in request headers and ad it to that request and related response headers
+  Scenario: Create correlation ID if it doesn't exist in request headers and add it to that request and related response headers
     Given correlation ID does not exists in http request header
     When request is processed
     Then new correlation ID is created and set to request and response X-Correlation-ID headers

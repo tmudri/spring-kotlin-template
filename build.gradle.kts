@@ -61,6 +61,7 @@ dependencies {
     implementation("io.cucumber:cucumber-jvm:5.1.0")
     implementation("io.cucumber:cucumber-java8:5.1.0")
     implementation("io.cucumber:cucumber-junit:5.1.0")
+    testImplementation("de.monochromata.cucumber:reporting-plugin:4.0.40")
 }
 
 tasks.withType<Test> {
@@ -90,6 +91,7 @@ tasks.register<Test>("int-test") {
 
 tasks.register<Test>("behavior-test") {
     useJUnitPlatform()
+    systemProperty("cucumber.reporting.config.file", "./src/behavior-test/resources/cucumber-reporting.properties")
     description = "Runs behavior tests."
     group = "verification"
 

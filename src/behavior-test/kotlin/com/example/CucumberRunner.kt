@@ -15,6 +15,6 @@ import org.junit.runner.RunWith
             "src/behavior-test/resources/features/factorial/factorial.feature",
             "src/behavior-test/resources/features/configuration/correlation_id.feature"
         ],
-        plugin = ["pretty", "json:build/cucumber.json"]
+        plugin = ["pretty", "json:build/cucumber/json/cucumber.json", "de.monochromata.cucumber.report.PrettyReports:build/cucumber/html"]
 )
 class CucumberRunner
