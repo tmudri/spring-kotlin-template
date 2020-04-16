@@ -1,4 +1,4 @@
-package com.example.repository
+package com.example.customer.repository
 
 import com.example.entity.CustomerEntity
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.example.factorial.service
+package com.example.factorial.controller
 
 import com.example.factorial.domain.Factorial
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -13,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class FactorialServiceCompTest {
+internal class FactorialControllerCompTest {
 
     @Autowired
     lateinit var restTemplate: TestRestTemplate
