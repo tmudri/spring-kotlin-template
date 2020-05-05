@@ -1,5 +1,6 @@
-package com.example.entity
+package com.example.customer.entity
 
+import com.example.customer.domain.Customer
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -12,10 +13,19 @@ import javax.persistence.Table
 @Table(name = "CUSTOMER")
 @SequenceGenerator(name = "CUSTOMER_SEQ_GEN", sequenceName = "CUSTOMER_SEQ", allocationSize = 1)
 data class CustomerEntity(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUSTOMER_SEQ_GEN") @Column(name = "ID")val id: Long? = null,
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUSTOMER_SEQ_GEN") @Column(name = "ID") val id: Long? = null,
     @Column(name = "FIRST_NAME") val firstName: String? = null,
     @Column(name = "LAST_NAME") val lastName: String? = null,
     @Column(name = "GENDER") val gender: String? = null,
     @Column(name = "ADDRESS") val address: String? = null,
     @Column(name = "PHONE") val phone: String? = null
-)
+) {
+    constructor(customer: Customer) : this(
+            id = customer.id,
+            firstName = customer.firstName,
+            lastName = customer.lastName,
+            gender = customer.gender,
+            address = customer.address,
+            phone = customer.phone
+    )
+}

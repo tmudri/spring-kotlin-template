@@ -1,64 +1,51 @@
 package com.example.factorial.controller
 
-import com.example.exception.ErrorCodes
 import com.example.factorial.domain.Factorial
-import com.example.factorial.service.UNSUPPORTED_FACTORIAL_VALUE
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.example.factorial.service.FactorialService
+import java.lang.IllegalArgumentException
+import java.lang.RuntimeException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
+import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.springframework.http.HttpStatus
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-class FactorialControllerTest(
-    @Autowired var mockMvc: MockMvc,
-    @Autowired val mapper: ObjectMapper
-) {
+class FactorialControllerTest() {
 
     @Test
-    fun shouldReturnFactorialOfSeven() {
-        val result = mockMvc
-                .get("/api/v1/factorial/7")
-                .andExpect {
-                    status { isOk }
-                }
-                .andReturn()
+    fun shouldReturnCorrectFactorialOnPositiveFactorialRequest() {
+        val factorialService = mock(FactorialService::class.java)
+        val factorialController = FactorialController(factorialService)
+        val factorialOfEight = Factorial(8, 40320)
 
-        val stringValue = result.response.contentAsString
-        val value = mapper.readValue(stringValue, Factorial::class.java)
+        `when`(factorialService.calculateFactorialNumberOf(8)).thenReturn(factorialOfEight)
 
-        assertEquals(Factorial(7, 5040), value)
+        val response = factorialController.factorial(8)
+
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals(factorialOfEight, response.body)
     }
 
     @Test
-    fun shouldReturnErrorResponseOnNegativeFactorialRequest() {
-        mockMvc
-                .get("/api/v1/factorial/-2")
-                .andExpect {
-                    status { isBadRequest }
-                    content {
-                        json("{\"errorCode\":\"${ErrorCodes.ILLEGAL_ARGUMENT.name}\",\"errorMessages\":[\"${String.format(UNSUPPORTED_FACTORIAL_VALUE, -2)}\"]}", true)
-                    }
-                }
-                .andReturn()
+    fun shouldThrowIllegalArgumentExceptionOnNegativeFactorialRequest() {
+        val factorialService = mock(FactorialService::class.java)
+        val factorialController = FactorialController(factorialService)
+
+        `when`(factorialService.calculateFactorialNumberOf(-2)).thenThrow(IllegalArgumentException::class.java)
+
+        assertThrows<IllegalArgumentException> {
+            factorialController.factorial(-2)
+        }
     }
 
     @Test
-    fun shouldReturnInternalServerErrorWhenExceptionThrownByControllerMethod() {
-        mockMvc
-                .get("/api/v1/factorial/general_exception")
-                .andExpect {
-                    status { isInternalServerError }
-                    content {
-                        json("{\"errorCode\":\"${ErrorCodes.GENERAL_EXCEPTION.name}\",\"errorMessages\":[\"Generated message.\"]}", true)
-                    }
-                }
-                .andReturn()
+    fun shouldThrowRuntimeExceptionThrownByGeneralExceptionMapping() {
+        val factorialService = mock(FactorialService::class.java)
+        val factorialController = FactorialController(factorialService)
+
+        assertThrows<RuntimeException> {
+            factorialController.generalExceptionMapping()
+        }
     }
 }

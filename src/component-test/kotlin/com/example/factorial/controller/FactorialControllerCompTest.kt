@@ -1,6 +1,9 @@
 package com.example.factorial.controller
 
+import com.example.exception.ErrorCodes
+import com.example.exception.ErrorResponse
 import com.example.factorial.domain.Factorial
+import com.example.factorial.service.UNSUPPORTED_FACTORIAL_VALUE
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -41,10 +44,15 @@ internal class FactorialControllerCompTest {
     @Test
     fun shouldReturnBadRequestForIllegalFactorialNumbers() {
         val url = "/api/v1/factorial/-2"
+        val expectedReturnValue = ErrorResponse(
+                errorCode = ErrorCodes.ILLEGAL_ARGUMENT.name,
+                errorMessages = listOf(UNSUPPORTED_FACTORIAL_VALUE.format(-2))
+        )
 
-        val response = restTemplate.getForEntity<String>(url)
+        val response = restTemplate.getForEntity<ErrorResponse>(url)
 
         assertEquals(HttpStatus.BAD_REQUEST, response.statusCode)
+        assertEquals(expectedReturnValue, response.body)
     }
 
     @Test

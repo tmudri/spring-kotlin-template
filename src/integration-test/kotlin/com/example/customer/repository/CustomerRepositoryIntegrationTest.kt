@@ -1,7 +1,8 @@
 package com.example.customer.repository
 
-import com.example.entity.CustomerEntity
+import com.example.customer.entity.CustomerEntity
 import org.junit.Test
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -10,15 +11,13 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.transaction.annotation.Propagation
-import org.springframework.transaction.annotation.Transactional
 
 @RunWith(SpringRunner::class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
-class CustomerRepositoryTest {
+class CustomerRepositoryIntegrationTest {
 
     @Autowired
     lateinit var customerRepository: CustomerRepository
@@ -33,7 +32,7 @@ class CustomerRepositoryTest {
                 phone = "+49 1600 5546 200"
         )
 
-        val savedCustomer = customerRepository.saveAndFlush(customer)
+        val savedCustomer = customerRepository.save(customer)
         val loadedCustomer = savedCustomer.id?.let {
             customerRepository.findById(it)
         }
@@ -54,14 +53,22 @@ class CustomerRepositoryTest {
                 phone = "+49 1501 1234 567"
         )
 
-        val savedCustomer = customerRepository.saveAndFlush(customer)
-        customerRepository.delete(savedCustomer)
+        val savedCustomer = customerRepository.save(customer)
+
         val deletedCustomer = savedCustomer.id?.let {
+            customerRepository.deleteById(it)
             customerRepository.findById(it)
         }
 
         assertNotNull(savedCustomer.id)
         assertNotNull(deletedCustomer)
         assertFalse(deletedCustomer!!.isPresent)
+    }
+
+    @Test
+    fun shouldThrowExceptionOnDeleteWhenCustomerNotExists() {
+        Assertions.assertThrows(EmptyResultDataAccessException::class.java) {
+            customerRepository.deleteById(10001)
+        }
     }
 }
