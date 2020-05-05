@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.RequestEntity
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
+// TODO: Use in-memory DB
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CorrelationIdFilterCompTest {
