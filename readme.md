@@ -21,7 +21,7 @@ Features:
  * Code formatting with linter ([ktlint](https://github.com/jlleitschuh/ktlint-gradle))  
  * Gradle test output logging during build
  * Logging with logback (TODO: log in json format)
- * TODO: Docker build file
+ * Docker build file
  * TODO: Kubernetes deployment configuration
    
 
@@ -32,3 +32,8 @@ https://github.com/jlleitschuh/ktlint-gradle
 https://github.com/radarsh/gradle-test-logger-plugin
 
 []: https://github.com/jlleitschuh/ktlint-gradle
+
+## Docker build
+```
+docker build -t tmudri/spring-kotlin-template .
+```
