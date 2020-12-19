@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spring-kotlin-template-pod
+  labels:
+    app: spring-kotlin-template
+    type: back-end
+spec:
+  containers:
+    - name: spring-kotlin-template
+      image: tmudri/spring-kotlin-template
